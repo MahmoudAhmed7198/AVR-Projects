@@ -1,0 +1,659 @@
+
+Fan_Project.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000044e  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .bss          00000003  00800060  00800060  000004c2  2**0
+                  ALLOC
+  2 .stab         00000720  00000000  00000000  000004c4  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  3 .stabstr      000007e3  00000000  00000000  00000be4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 36 01 	jmp	0x26c	; 0x26c <__vector_1>
+   8:	0c 94 80 01 	jmp	0x300	; 0x300 <__vector_2>
+   c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  10:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  14:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  18:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  1c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  20:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  24:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  28:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  2c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  30:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  34:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  38:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  3c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  40:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  44:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  48:	0c 94 ca 01 	jmp	0x394	; 0x394 <__vector_18>
+  4c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  50:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d4 e0       	ldi	r29, 0x04	; 4
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_clear_bss>:
+  60:	10 e0       	ldi	r17, 0x00	; 0
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	01 c0       	rjmp	.+2      	; 0x6a <.do_clear_bss_start>
+
+00000068 <.do_clear_bss_loop>:
+  68:	1d 92       	st	X+, r1
+
+0000006a <.do_clear_bss_start>:
+  6a:	a3 36       	cpi	r26, 0x63	; 99
+  6c:	b1 07       	cpc	r27, r17
+  6e:	e1 f7       	brne	.-8      	; 0x68 <.do_clear_bss_loop>
+  70:	0e 94 14 02 	call	0x428	; 0x428 <main>
+  74:	0c 94 25 02 	jmp	0x44a	; 0x44a <_exit>
+
+00000078 <__bad_interrupt>:
+  78:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000007c <INT0_speed1_Init>:
+#include<util/delay.h>
+typedef unsigned char uint8;
+typedef unsigned short uint16;
+uint8 seg[2],i;
+void INT0_speed1_Init()
+{
+  7c:	df 93       	push	r29
+  7e:	cf 93       	push	r28
+  80:	cd b7       	in	r28, 0x3d	; 61
+  82:	de b7       	in	r29, 0x3e	; 62
+	DDRD &=~(1<<PD2);//make pin PD2 input
+  84:	a1 e3       	ldi	r26, 0x31	; 49
+  86:	b0 e0       	ldi	r27, 0x00	; 0
+  88:	e1 e3       	ldi	r30, 0x31	; 49
+  8a:	f0 e0       	ldi	r31, 0x00	; 0
+  8c:	80 81       	ld	r24, Z
+  8e:	8b 7f       	andi	r24, 0xFB	; 251
+  90:	8c 93       	st	X, r24
+	PORTD |=(1<<PD2);//internal pull up resistor
+  92:	a2 e3       	ldi	r26, 0x32	; 50
+  94:	b0 e0       	ldi	r27, 0x00	; 0
+  96:	e2 e3       	ldi	r30, 0x32	; 50
+  98:	f0 e0       	ldi	r31, 0x00	; 0
+  9a:	80 81       	ld	r24, Z
+  9c:	84 60       	ori	r24, 0x04	; 4
+  9e:	8c 93       	st	X, r24
+	MCUCR |=(1<<ISC01);//make interrupt INT0 sense at falling edge
+  a0:	a5 e5       	ldi	r26, 0x55	; 85
+  a2:	b0 e0       	ldi	r27, 0x00	; 0
+  a4:	e5 e5       	ldi	r30, 0x55	; 85
+  a6:	f0 e0       	ldi	r31, 0x00	; 0
+  a8:	80 81       	ld	r24, Z
+  aa:	82 60       	ori	r24, 0x02	; 2
+  ac:	8c 93       	st	X, r24
+	GICR |=(1<<INT0);//enable MIE
+  ae:	ab e5       	ldi	r26, 0x5B	; 91
+  b0:	b0 e0       	ldi	r27, 0x00	; 0
+  b2:	eb e5       	ldi	r30, 0x5B	; 91
+  b4:	f0 e0       	ldi	r31, 0x00	; 0
+  b6:	80 81       	ld	r24, Z
+  b8:	80 64       	ori	r24, 0x40	; 64
+  ba:	8c 93       	st	X, r24
+	SREG |=(1<<7);//enable GIE
+  bc:	af e5       	ldi	r26, 0x5F	; 95
+  be:	b0 e0       	ldi	r27, 0x00	; 0
+  c0:	ef e5       	ldi	r30, 0x5F	; 95
+  c2:	f0 e0       	ldi	r31, 0x00	; 0
+  c4:	80 81       	ld	r24, Z
+  c6:	80 68       	ori	r24, 0x80	; 128
+  c8:	8c 93       	st	X, r24
+}
+  ca:	cf 91       	pop	r28
+  cc:	df 91       	pop	r29
+  ce:	08 95       	ret
+
+000000d0 <INT1_speed2_Init>:
+void INT1_speed2_Init()
+{
+  d0:	df 93       	push	r29
+  d2:	cf 93       	push	r28
+  d4:	cd b7       	in	r28, 0x3d	; 61
+  d6:	de b7       	in	r29, 0x3e	; 62
+	DDRD &=~(1<<PD3);//make pin PD3 input pin
+  d8:	a1 e3       	ldi	r26, 0x31	; 49
+  da:	b0 e0       	ldi	r27, 0x00	; 0
+  dc:	e1 e3       	ldi	r30, 0x31	; 49
+  de:	f0 e0       	ldi	r31, 0x00	; 0
+  e0:	80 81       	ld	r24, Z
+  e2:	87 7f       	andi	r24, 0xF7	; 247
+  e4:	8c 93       	st	X, r24
+	PORTD |=(1<<PD3);//internal pull up resistor
+  e6:	a2 e3       	ldi	r26, 0x32	; 50
+  e8:	b0 e0       	ldi	r27, 0x00	; 0
+  ea:	e2 e3       	ldi	r30, 0x32	; 50
+  ec:	f0 e0       	ldi	r31, 0x00	; 0
+  ee:	80 81       	ld	r24, Z
+  f0:	88 60       	ori	r24, 0x08	; 8
+  f2:	8c 93       	st	X, r24
+	MCUCR |=(1<<ISC11);//make interrupt INT1 sense at falling edge
+  f4:	a5 e5       	ldi	r26, 0x55	; 85
+  f6:	b0 e0       	ldi	r27, 0x00	; 0
+  f8:	e5 e5       	ldi	r30, 0x55	; 85
+  fa:	f0 e0       	ldi	r31, 0x00	; 0
+  fc:	80 81       	ld	r24, Z
+  fe:	88 60       	ori	r24, 0x08	; 8
+ 100:	8c 93       	st	X, r24
+	GICR |=(1<<INT1);//enable MIE
+ 102:	ab e5       	ldi	r26, 0x5B	; 91
+ 104:	b0 e0       	ldi	r27, 0x00	; 0
+ 106:	eb e5       	ldi	r30, 0x5B	; 91
+ 108:	f0 e0       	ldi	r31, 0x00	; 0
+ 10a:	80 81       	ld	r24, Z
+ 10c:	80 68       	ori	r24, 0x80	; 128
+ 10e:	8c 93       	st	X, r24
+	SREG |=(1<<7);//enable GIE
+ 110:	af e5       	ldi	r26, 0x5F	; 95
+ 112:	b0 e0       	ldi	r27, 0x00	; 0
+ 114:	ef e5       	ldi	r30, 0x5F	; 95
+ 116:	f0 e0       	ldi	r31, 0x00	; 0
+ 118:	80 81       	ld	r24, Z
+ 11a:	80 68       	ori	r24, 0x80	; 128
+ 11c:	8c 93       	st	X, r24
+}
+ 11e:	cf 91       	pop	r28
+ 120:	df 91       	pop	r29
+ 122:	08 95       	ret
+
+00000124 <INT2_speed3_Init>:
+void INT2_speed3_Init()
+{
+ 124:	df 93       	push	r29
+ 126:	cf 93       	push	r28
+ 128:	cd b7       	in	r28, 0x3d	; 61
+ 12a:	de b7       	in	r29, 0x3e	; 62
+	DDRB &=~(1<<PB2);//make pin PB2 input pin
+ 12c:	a7 e3       	ldi	r26, 0x37	; 55
+ 12e:	b0 e0       	ldi	r27, 0x00	; 0
+ 130:	e7 e3       	ldi	r30, 0x37	; 55
+ 132:	f0 e0       	ldi	r31, 0x00	; 0
+ 134:	80 81       	ld	r24, Z
+ 136:	8b 7f       	andi	r24, 0xFB	; 251
+ 138:	8c 93       	st	X, r24
+	PORTB |=(1<<PB2);//internal pull up resistor
+ 13a:	a8 e3       	ldi	r26, 0x38	; 56
+ 13c:	b0 e0       	ldi	r27, 0x00	; 0
+ 13e:	e8 e3       	ldi	r30, 0x38	; 56
+ 140:	f0 e0       	ldi	r31, 0x00	; 0
+ 142:	80 81       	ld	r24, Z
+ 144:	84 60       	ori	r24, 0x04	; 4
+ 146:	8c 93       	st	X, r24
+	MCUCSR |=(1<<ISC2);//sense of INT2
+ 148:	a4 e5       	ldi	r26, 0x54	; 84
+ 14a:	b0 e0       	ldi	r27, 0x00	; 0
+ 14c:	e4 e5       	ldi	r30, 0x54	; 84
+ 14e:	f0 e0       	ldi	r31, 0x00	; 0
+ 150:	80 81       	ld	r24, Z
+ 152:	80 64       	ori	r24, 0x40	; 64
+ 154:	8c 93       	st	X, r24
+	GICR |=(1<<INT2);//enable MIE
+ 156:	ab e5       	ldi	r26, 0x5B	; 91
+ 158:	b0 e0       	ldi	r27, 0x00	; 0
+ 15a:	eb e5       	ldi	r30, 0x5B	; 91
+ 15c:	f0 e0       	ldi	r31, 0x00	; 0
+ 15e:	80 81       	ld	r24, Z
+ 160:	80 62       	ori	r24, 0x20	; 32
+ 162:	8c 93       	st	X, r24
+	SREG |=(1<<7);//enable GIE
+ 164:	af e5       	ldi	r26, 0x5F	; 95
+ 166:	b0 e0       	ldi	r27, 0x00	; 0
+ 168:	ef e5       	ldi	r30, 0x5F	; 95
+ 16a:	f0 e0       	ldi	r31, 0x00	; 0
+ 16c:	80 81       	ld	r24, Z
+ 16e:	80 68       	ori	r24, 0x80	; 128
+ 170:	8c 93       	st	X, r24
+}
+ 172:	cf 91       	pop	r28
+ 174:	df 91       	pop	r29
+ 176:	08 95       	ret
+
+00000178 <start_stop>:
+void start_stop()
+{
+ 178:	df 93       	push	r29
+ 17a:	cf 93       	push	r28
+ 17c:	cd b7       	in	r28, 0x3d	; 61
+ 17e:	de b7       	in	r29, 0x3e	; 62
+	DDRB &=~(1<<PB0);//make pin PB0 input pin
+ 180:	a7 e3       	ldi	r26, 0x37	; 55
+ 182:	b0 e0       	ldi	r27, 0x00	; 0
+ 184:	e7 e3       	ldi	r30, 0x37	; 55
+ 186:	f0 e0       	ldi	r31, 0x00	; 0
+ 188:	80 81       	ld	r24, Z
+ 18a:	8e 7f       	andi	r24, 0xFE	; 254
+ 18c:	8c 93       	st	X, r24
+	PORTB |=(1<<PB0);//internal pull up resistor
+ 18e:	a8 e3       	ldi	r26, 0x38	; 56
+ 190:	b0 e0       	ldi	r27, 0x00	; 0
+ 192:	e8 e3       	ldi	r30, 0x38	; 56
+ 194:	f0 e0       	ldi	r31, 0x00	; 0
+ 196:	80 81       	ld	r24, Z
+ 198:	81 60       	ori	r24, 0x01	; 1
+ 19a:	8c 93       	st	X, r24
+
+}
+ 19c:	cf 91       	pop	r28
+ 19e:	df 91       	pop	r29
+ 1a0:	08 95       	ret
+
+000001a2 <timer_setting>:
+void timer_setting()
+{
+ 1a2:	df 93       	push	r29
+ 1a4:	cf 93       	push	r28
+ 1a6:	cd b7       	in	r28, 0x3d	; 61
+ 1a8:	de b7       	in	r29, 0x3e	; 62
+	DDRB &=~(1<<PB1);//make pin PB1 input pin
+ 1aa:	a7 e3       	ldi	r26, 0x37	; 55
+ 1ac:	b0 e0       	ldi	r27, 0x00	; 0
+ 1ae:	e7 e3       	ldi	r30, 0x37	; 55
+ 1b0:	f0 e0       	ldi	r31, 0x00	; 0
+ 1b2:	80 81       	ld	r24, Z
+ 1b4:	8d 7f       	andi	r24, 0xFD	; 253
+ 1b6:	8c 93       	st	X, r24
+	PORTB |=(1<<PB1);//internal pull up resistor
+ 1b8:	a8 e3       	ldi	r26, 0x38	; 56
+ 1ba:	b0 e0       	ldi	r27, 0x00	; 0
+ 1bc:	e8 e3       	ldi	r30, 0x38	; 56
+ 1be:	f0 e0       	ldi	r31, 0x00	; 0
+ 1c0:	80 81       	ld	r24, Z
+ 1c2:	82 60       	ori	r24, 0x02	; 2
+ 1c4:	8c 93       	st	X, r24
+}
+ 1c6:	cf 91       	pop	r28
+ 1c8:	df 91       	pop	r29
+ 1ca:	08 95       	ret
+
+000001cc <seven_seg_Init>:
+void seven_seg_Init()
+{
+ 1cc:	df 93       	push	r29
+ 1ce:	cf 93       	push	r28
+ 1d0:	cd b7       	in	r28, 0x3d	; 61
+ 1d2:	de b7       	in	r29, 0x3e	; 62
+	DDRC |=0x0F;//make lower 4 pins of portc output pins
+ 1d4:	a4 e3       	ldi	r26, 0x34	; 52
+ 1d6:	b0 e0       	ldi	r27, 0x00	; 0
+ 1d8:	e4 e3       	ldi	r30, 0x34	; 52
+ 1da:	f0 e0       	ldi	r31, 0x00	; 0
+ 1dc:	80 81       	ld	r24, Z
+ 1de:	8f 60       	ori	r24, 0x0F	; 15
+ 1e0:	8c 93       	st	X, r24
+	DDRA |=(1<<PA0)|(1<<PA1);//enable pins direction for seven segments is ouput
+ 1e2:	aa e3       	ldi	r26, 0x3A	; 58
+ 1e4:	b0 e0       	ldi	r27, 0x00	; 0
+ 1e6:	ea e3       	ldi	r30, 0x3A	; 58
+ 1e8:	f0 e0       	ldi	r31, 0x00	; 0
+ 1ea:	80 81       	ld	r24, Z
+ 1ec:	83 60       	ori	r24, 0x03	; 3
+ 1ee:	8c 93       	st	X, r24
+	//PORTA |=(1<<PA0)|(1<<PA1);//enable pins at initialization time
+	//PORTC &=0xF0;//make all seven segments 0 at beginning
+}
+ 1f0:	cf 91       	pop	r28
+ 1f2:	df 91       	pop	r29
+ 1f4:	08 95       	ret
+
+000001f6 <Timer0_PWM_Init>:
+void Timer0_PWM_Init(uint8 duty_cycle)
+{
+ 1f6:	df 93       	push	r29
+ 1f8:	cf 93       	push	r28
+ 1fa:	0f 92       	push	r0
+ 1fc:	cd b7       	in	r28, 0x3d	; 61
+ 1fe:	de b7       	in	r29, 0x3e	; 62
+ 200:	89 83       	std	Y+1, r24	; 0x01
+	TCCR0 |=(1<<WGM00)|(1<<WGM01)|(1<<COM01)|(1<<CS01);//make timer0 PWM mode non inverting 8 prescaler
+ 202:	a3 e5       	ldi	r26, 0x53	; 83
+ 204:	b0 e0       	ldi	r27, 0x00	; 0
+ 206:	e3 e5       	ldi	r30, 0x53	; 83
+ 208:	f0 e0       	ldi	r31, 0x00	; 0
+ 20a:	80 81       	ld	r24, Z
+ 20c:	8a 66       	ori	r24, 0x6A	; 106
+ 20e:	8c 93       	st	X, r24
+	TCNT0=0;
+ 210:	e2 e5       	ldi	r30, 0x52	; 82
+ 212:	f0 e0       	ldi	r31, 0x00	; 0
+ 214:	10 82       	st	Z, r1
+	OCR0=duty_cycle;
+ 216:	ec e5       	ldi	r30, 0x5C	; 92
+ 218:	f0 e0       	ldi	r31, 0x00	; 0
+ 21a:	89 81       	ldd	r24, Y+1	; 0x01
+ 21c:	80 83       	st	Z, r24
+	DDRB |=(1<<PB3);
+ 21e:	a7 e3       	ldi	r26, 0x37	; 55
+ 220:	b0 e0       	ldi	r27, 0x00	; 0
+ 222:	e7 e3       	ldi	r30, 0x37	; 55
+ 224:	f0 e0       	ldi	r31, 0x00	; 0
+ 226:	80 81       	ld	r24, Z
+ 228:	88 60       	ori	r24, 0x08	; 8
+ 22a:	8c 93       	st	X, r24
+}
+ 22c:	0f 90       	pop	r0
+ 22e:	cf 91       	pop	r28
+ 230:	df 91       	pop	r29
+ 232:	08 95       	ret
+
+00000234 <motor_rotate>:
+void motor_rotate()
+{
+ 234:	df 93       	push	r29
+ 236:	cf 93       	push	r28
+ 238:	cd b7       	in	r28, 0x3d	; 61
+ 23a:	de b7       	in	r29, 0x3e	; 62
+	DDRA |=(1<<PA2)|(1<<PA3);
+ 23c:	aa e3       	ldi	r26, 0x3A	; 58
+ 23e:	b0 e0       	ldi	r27, 0x00	; 0
+ 240:	ea e3       	ldi	r30, 0x3A	; 58
+ 242:	f0 e0       	ldi	r31, 0x00	; 0
+ 244:	80 81       	ld	r24, Z
+ 246:	8c 60       	ori	r24, 0x0C	; 12
+ 248:	8c 93       	st	X, r24
+	PORTA &=~(1<<PA2);
+ 24a:	ab e3       	ldi	r26, 0x3B	; 59
+ 24c:	b0 e0       	ldi	r27, 0x00	; 0
+ 24e:	eb e3       	ldi	r30, 0x3B	; 59
+ 250:	f0 e0       	ldi	r31, 0x00	; 0
+ 252:	80 81       	ld	r24, Z
+ 254:	8b 7f       	andi	r24, 0xFB	; 251
+ 256:	8c 93       	st	X, r24
+	PORTA |=(1<<PA3);
+ 258:	ab e3       	ldi	r26, 0x3B	; 59
+ 25a:	b0 e0       	ldi	r27, 0x00	; 0
+ 25c:	eb e3       	ldi	r30, 0x3B	; 59
+ 25e:	f0 e0       	ldi	r31, 0x00	; 0
+ 260:	80 81       	ld	r24, Z
+ 262:	88 60       	ori	r24, 0x08	; 8
+ 264:	8c 93       	st	X, r24
+}
+ 266:	cf 91       	pop	r28
+ 268:	df 91       	pop	r29
+ 26a:	08 95       	ret
+
+0000026c <__vector_1>:
+ISR(INT0_vect)
+{
+ 26c:	1f 92       	push	r1
+ 26e:	0f 92       	push	r0
+ 270:	0f b6       	in	r0, 0x3f	; 63
+ 272:	0f 92       	push	r0
+ 274:	11 24       	eor	r1, r1
+ 276:	2f 93       	push	r18
+ 278:	3f 93       	push	r19
+ 27a:	4f 93       	push	r20
+ 27c:	5f 93       	push	r21
+ 27e:	6f 93       	push	r22
+ 280:	7f 93       	push	r23
+ 282:	8f 93       	push	r24
+ 284:	9f 93       	push	r25
+ 286:	af 93       	push	r26
+ 288:	bf 93       	push	r27
+ 28a:	ef 93       	push	r30
+ 28c:	ff 93       	push	r31
+ 28e:	df 93       	push	r29
+ 290:	cf 93       	push	r28
+ 292:	cd b7       	in	r28, 0x3d	; 61
+ 294:	de b7       	in	r29, 0x3e	; 62
+	seg[0]=1;
+ 296:	81 e0       	ldi	r24, 0x01	; 1
+ 298:	80 93 60 00 	sts	0x0060, r24
+	motor_rotate();
+ 29c:	0e 94 1a 01 	call	0x234	; 0x234 <motor_rotate>
+	Timer0_PWM_Init(64);
+ 2a0:	80 e4       	ldi	r24, 0x40	; 64
+ 2a2:	0e 94 fb 00 	call	0x1f6	; 0x1f6 <Timer0_PWM_Init>
+	PORTA |=(1<<PA0);
+ 2a6:	ab e3       	ldi	r26, 0x3B	; 59
+ 2a8:	b0 e0       	ldi	r27, 0x00	; 0
+ 2aa:	eb e3       	ldi	r30, 0x3B	; 59
+ 2ac:	f0 e0       	ldi	r31, 0x00	; 0
+ 2ae:	80 81       	ld	r24, Z
+ 2b0:	81 60       	ori	r24, 0x01	; 1
+ 2b2:	8c 93       	st	X, r24
+	PORTA &=~(1<<PA1);
+ 2b4:	ab e3       	ldi	r26, 0x3B	; 59
+ 2b6:	b0 e0       	ldi	r27, 0x00	; 0
+ 2b8:	eb e3       	ldi	r30, 0x3B	; 59
+ 2ba:	f0 e0       	ldi	r31, 0x00	; 0
+ 2bc:	80 81       	ld	r24, Z
+ 2be:	8d 7f       	andi	r24, 0xFD	; 253
+ 2c0:	8c 93       	st	X, r24
+	PORTC=(PORTC & 0xF0)|(seg[0] & 0x0F);
+ 2c2:	a5 e3       	ldi	r26, 0x35	; 53
+ 2c4:	b0 e0       	ldi	r27, 0x00	; 0
+ 2c6:	e5 e3       	ldi	r30, 0x35	; 53
+ 2c8:	f0 e0       	ldi	r31, 0x00	; 0
+ 2ca:	80 81       	ld	r24, Z
+ 2cc:	98 2f       	mov	r25, r24
+ 2ce:	90 7f       	andi	r25, 0xF0	; 240
+ 2d0:	80 91 60 00 	lds	r24, 0x0060
+ 2d4:	8f 70       	andi	r24, 0x0F	; 15
+ 2d6:	89 2b       	or	r24, r25
+ 2d8:	8c 93       	st	X, r24
+}
+ 2da:	cf 91       	pop	r28
+ 2dc:	df 91       	pop	r29
+ 2de:	ff 91       	pop	r31
+ 2e0:	ef 91       	pop	r30
+ 2e2:	bf 91       	pop	r27
+ 2e4:	af 91       	pop	r26
+ 2e6:	9f 91       	pop	r25
+ 2e8:	8f 91       	pop	r24
+ 2ea:	7f 91       	pop	r23
+ 2ec:	6f 91       	pop	r22
+ 2ee:	5f 91       	pop	r21
+ 2f0:	4f 91       	pop	r20
+ 2f2:	3f 91       	pop	r19
+ 2f4:	2f 91       	pop	r18
+ 2f6:	0f 90       	pop	r0
+ 2f8:	0f be       	out	0x3f, r0	; 63
+ 2fa:	0f 90       	pop	r0
+ 2fc:	1f 90       	pop	r1
+ 2fe:	18 95       	reti
+
+00000300 <__vector_2>:
+ISR(INT1_vect)
+{
+ 300:	1f 92       	push	r1
+ 302:	0f 92       	push	r0
+ 304:	0f b6       	in	r0, 0x3f	; 63
+ 306:	0f 92       	push	r0
+ 308:	11 24       	eor	r1, r1
+ 30a:	2f 93       	push	r18
+ 30c:	3f 93       	push	r19
+ 30e:	4f 93       	push	r20
+ 310:	5f 93       	push	r21
+ 312:	6f 93       	push	r22
+ 314:	7f 93       	push	r23
+ 316:	8f 93       	push	r24
+ 318:	9f 93       	push	r25
+ 31a:	af 93       	push	r26
+ 31c:	bf 93       	push	r27
+ 31e:	ef 93       	push	r30
+ 320:	ff 93       	push	r31
+ 322:	df 93       	push	r29
+ 324:	cf 93       	push	r28
+ 326:	cd b7       	in	r28, 0x3d	; 61
+ 328:	de b7       	in	r29, 0x3e	; 62
+	seg[0]=2;
+ 32a:	82 e0       	ldi	r24, 0x02	; 2
+ 32c:	80 93 60 00 	sts	0x0060, r24
+	motor_rotate();
+ 330:	0e 94 1a 01 	call	0x234	; 0x234 <motor_rotate>
+	Timer0_PWM_Init(128);
+ 334:	80 e8       	ldi	r24, 0x80	; 128
+ 336:	0e 94 fb 00 	call	0x1f6	; 0x1f6 <Timer0_PWM_Init>
+	PORTA |=(1<<PA0);
+ 33a:	ab e3       	ldi	r26, 0x3B	; 59
+ 33c:	b0 e0       	ldi	r27, 0x00	; 0
+ 33e:	eb e3       	ldi	r30, 0x3B	; 59
+ 340:	f0 e0       	ldi	r31, 0x00	; 0
+ 342:	80 81       	ld	r24, Z
+ 344:	81 60       	ori	r24, 0x01	; 1
+ 346:	8c 93       	st	X, r24
+	PORTA &=~(1<<PA1);
+ 348:	ab e3       	ldi	r26, 0x3B	; 59
+ 34a:	b0 e0       	ldi	r27, 0x00	; 0
+ 34c:	eb e3       	ldi	r30, 0x3B	; 59
+ 34e:	f0 e0       	ldi	r31, 0x00	; 0
+ 350:	80 81       	ld	r24, Z
+ 352:	8d 7f       	andi	r24, 0xFD	; 253
+ 354:	8c 93       	st	X, r24
+	PORTC=(PORTC & 0xF0)|(seg[0] & 0x0F);
+ 356:	a5 e3       	ldi	r26, 0x35	; 53
+ 358:	b0 e0       	ldi	r27, 0x00	; 0
+ 35a:	e5 e3       	ldi	r30, 0x35	; 53
+ 35c:	f0 e0       	ldi	r31, 0x00	; 0
+ 35e:	80 81       	ld	r24, Z
+ 360:	98 2f       	mov	r25, r24
+ 362:	90 7f       	andi	r25, 0xF0	; 240
+ 364:	80 91 60 00 	lds	r24, 0x0060
+ 368:	8f 70       	andi	r24, 0x0F	; 15
+ 36a:	89 2b       	or	r24, r25
+ 36c:	8c 93       	st	X, r24
+}
+ 36e:	cf 91       	pop	r28
+ 370:	df 91       	pop	r29
+ 372:	ff 91       	pop	r31
+ 374:	ef 91       	pop	r30
+ 376:	bf 91       	pop	r27
+ 378:	af 91       	pop	r26
+ 37a:	9f 91       	pop	r25
+ 37c:	8f 91       	pop	r24
+ 37e:	7f 91       	pop	r23
+ 380:	6f 91       	pop	r22
+ 382:	5f 91       	pop	r21
+ 384:	4f 91       	pop	r20
+ 386:	3f 91       	pop	r19
+ 388:	2f 91       	pop	r18
+ 38a:	0f 90       	pop	r0
+ 38c:	0f be       	out	0x3f, r0	; 63
+ 38e:	0f 90       	pop	r0
+ 390:	1f 90       	pop	r1
+ 392:	18 95       	reti
+
+00000394 <__vector_18>:
+ISR(INT2_vect)
+{
+ 394:	1f 92       	push	r1
+ 396:	0f 92       	push	r0
+ 398:	0f b6       	in	r0, 0x3f	; 63
+ 39a:	0f 92       	push	r0
+ 39c:	11 24       	eor	r1, r1
+ 39e:	2f 93       	push	r18
+ 3a0:	3f 93       	push	r19
+ 3a2:	4f 93       	push	r20
+ 3a4:	5f 93       	push	r21
+ 3a6:	6f 93       	push	r22
+ 3a8:	7f 93       	push	r23
+ 3aa:	8f 93       	push	r24
+ 3ac:	9f 93       	push	r25
+ 3ae:	af 93       	push	r26
+ 3b0:	bf 93       	push	r27
+ 3b2:	ef 93       	push	r30
+ 3b4:	ff 93       	push	r31
+ 3b6:	df 93       	push	r29
+ 3b8:	cf 93       	push	r28
+ 3ba:	cd b7       	in	r28, 0x3d	; 61
+ 3bc:	de b7       	in	r29, 0x3e	; 62
+	seg[0]=3;
+ 3be:	83 e0       	ldi	r24, 0x03	; 3
+ 3c0:	80 93 60 00 	sts	0x0060, r24
+	motor_rotate();
+ 3c4:	0e 94 1a 01 	call	0x234	; 0x234 <motor_rotate>
+	Timer0_PWM_Init(255);
+ 3c8:	8f ef       	ldi	r24, 0xFF	; 255
+ 3ca:	0e 94 fb 00 	call	0x1f6	; 0x1f6 <Timer0_PWM_Init>
+	PORTA |=(1<<PA0);
+ 3ce:	ab e3       	ldi	r26, 0x3B	; 59
+ 3d0:	b0 e0       	ldi	r27, 0x00	; 0
+ 3d2:	eb e3       	ldi	r30, 0x3B	; 59
+ 3d4:	f0 e0       	ldi	r31, 0x00	; 0
+ 3d6:	80 81       	ld	r24, Z
+ 3d8:	81 60       	ori	r24, 0x01	; 1
+ 3da:	8c 93       	st	X, r24
+	PORTA &=~(1<<PA1);
+ 3dc:	ab e3       	ldi	r26, 0x3B	; 59
+ 3de:	b0 e0       	ldi	r27, 0x00	; 0
+ 3e0:	eb e3       	ldi	r30, 0x3B	; 59
+ 3e2:	f0 e0       	ldi	r31, 0x00	; 0
+ 3e4:	80 81       	ld	r24, Z
+ 3e6:	8d 7f       	andi	r24, 0xFD	; 253
+ 3e8:	8c 93       	st	X, r24
+	PORTC=(PORTC & 0xF0)|(seg[0] & 0x0F);
+ 3ea:	a5 e3       	ldi	r26, 0x35	; 53
+ 3ec:	b0 e0       	ldi	r27, 0x00	; 0
+ 3ee:	e5 e3       	ldi	r30, 0x35	; 53
+ 3f0:	f0 e0       	ldi	r31, 0x00	; 0
+ 3f2:	80 81       	ld	r24, Z
+ 3f4:	98 2f       	mov	r25, r24
+ 3f6:	90 7f       	andi	r25, 0xF0	; 240
+ 3f8:	80 91 60 00 	lds	r24, 0x0060
+ 3fc:	8f 70       	andi	r24, 0x0F	; 15
+ 3fe:	89 2b       	or	r24, r25
+ 400:	8c 93       	st	X, r24
+}
+ 402:	cf 91       	pop	r28
+ 404:	df 91       	pop	r29
+ 406:	ff 91       	pop	r31
+ 408:	ef 91       	pop	r30
+ 40a:	bf 91       	pop	r27
+ 40c:	af 91       	pop	r26
+ 40e:	9f 91       	pop	r25
+ 410:	8f 91       	pop	r24
+ 412:	7f 91       	pop	r23
+ 414:	6f 91       	pop	r22
+ 416:	5f 91       	pop	r21
+ 418:	4f 91       	pop	r20
+ 41a:	3f 91       	pop	r19
+ 41c:	2f 91       	pop	r18
+ 41e:	0f 90       	pop	r0
+ 420:	0f be       	out	0x3f, r0	; 63
+ 422:	0f 90       	pop	r0
+ 424:	1f 90       	pop	r1
+ 426:	18 95       	reti
+
+00000428 <main>:
+
+int main()
+{
+ 428:	df 93       	push	r29
+ 42a:	cf 93       	push	r28
+ 42c:	cd b7       	in	r28, 0x3d	; 61
+ 42e:	de b7       	in	r29, 0x3e	; 62
+	INT0_speed1_Init();
+ 430:	0e 94 3e 00 	call	0x7c	; 0x7c <INT0_speed1_Init>
+	INT1_speed2_Init();
+ 434:	0e 94 68 00 	call	0xd0	; 0xd0 <INT1_speed2_Init>
+	INT2_speed3_Init();
+ 438:	0e 94 92 00 	call	0x124	; 0x124 <INT2_speed3_Init>
+	start_stop();
+ 43c:	0e 94 bc 00 	call	0x178	; 0x178 <start_stop>
+	timer_setting();
+ 440:	0e 94 d1 00 	call	0x1a2	; 0x1a2 <timer_setting>
+	seven_seg_Init();
+ 444:	0e 94 e6 00 	call	0x1cc	; 0x1cc <seven_seg_Init>
+ 448:	ff cf       	rjmp	.-2      	; 0x448 <main+0x20>
+
+0000044a <_exit>:
+ 44a:	f8 94       	cli
+
+0000044c <__stop_program>:
+ 44c:	ff cf       	rjmp	.-2      	; 0x44c <__stop_program>
